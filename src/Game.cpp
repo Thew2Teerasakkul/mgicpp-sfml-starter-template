@@ -10,12 +10,24 @@ Game::Game(sf::RenderWindow& game_window)
 
 Game::~Game()
 {
-	// blah
+
 }
 
 // We call this once after the game class is instantiated
 bool Game::init()
 {
+	if (!backgroundTexture.loadFromFile("../Data/Images/WhackaMole Worksheet/background.png"))
+	{
+		std::cout << "Failed to load background texture \n";
+	}
+	background.setTexture(backgroundTexture);
+
+	if (!birdTexture.loadFromFile("../Data/Images/WhackaMole Worksheet/bird.png"))
+	{
+		std::cout << "Failed to load bird texture \n";
+		return false;
+	}
+	bird.setTexture(birdTexture);
 
   return true;
 }
@@ -30,7 +42,8 @@ void Game::update(float dt)
 // Runs after update, use it to tell the window what to draw this frame
 void Game::render()
 {
-
+	window.draw(background);
+	window.draw(bird);
 }
 
 //Called by event polling when a MouseButtonPressed event is found
@@ -39,7 +52,7 @@ void Game::mouseButtonPressed(const sf::Event::MouseButtonPressed* event)
 	// Event contains mouse position and which button was clicked
 
 	// Don't need to extract position to a variable like this, this is just to show you it's a Vector2i
-	sf::Vector2i position = event->position;
+    sf::Vector2i position = event->position;
 
 	// You can tell which button was pressed by comparing it to SFML's definitions of mouse buttons
 	if (event->button == sf::Mouse::Button::Left)

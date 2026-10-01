@@ -19,7 +19,11 @@ class Game
 
  private:
   sf::RenderWindow& window;
-  
+  sf::Texture backgroundTexture{"../Data/Images/WhackaMole Worksheet/background.png"};
+  sf::Sprite background = sf::Sprite(backgroundTexture);
+  sf::Texture birdTexture{ "../Data/Images/WhackaMole Worksheet/bird.png" };
+  sf::Sprite bird = sf::Sprite(birdTexture);
+
 
 };
 
