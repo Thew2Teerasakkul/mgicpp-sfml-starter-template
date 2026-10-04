@@ -16,18 +16,10 @@ Game::~Game()
 // We call this once after the game class is instantiated
 bool Game::init()
 {
-	if (!backgroundTexture.loadFromFile("../Data/Images/WhackaMole Worksheet/background.png"))
-	{
-		std::cout << "Failed to load background texture \n";
-	}
-	background.setTexture(backgroundTexture);
+	inMenu = true;
 
-	if (!birdTexture.loadFromFile("../Data/Images/WhackaMole Worksheet/bird.png"))
-	{
-		std::cout << "Failed to load bird texture \n";
-		return false;
-	}
-	bird.setTexture(birdTexture);
+	mainMenu();
+	inGame();
 
   return true;
 }
@@ -42,8 +34,18 @@ void Game::update(float dt)
 // Runs after update, use it to tell the window what to draw this frame
 void Game::render()
 {
-	window.draw(background);
-	window.draw(bird);
+	if (inMenu == true)
+	{
+		window.draw(menubackground);
+		window.draw(titleText);
+		window.draw(startOption);
+		window.draw(quitOption);
+	}
+	if (inMenu == false)
+	{
+		window.draw(background);
+		window.draw(bird);
+	}
 }
 
 //Called by event polling when a MouseButtonPressed event is found
@@ -93,4 +95,43 @@ void Game::keyReleased(const sf::Event::KeyReleased* event)
 
 }
 
+void Game::mainMenu()
+{
+	if (!menubackgroundTexture.loadFromFile("../Data/Images/WhackaMole Worksheet/background.png"))
+	{
+		std::cout << "Failed to load menu background texture \n";
+	}
+	menubackground.setTexture(menubackgroundTexture);
 
+	if (!menuFont.openFromFile("../Data/Fonts/OpenSans-Bold.ttf"))
+	{
+		std::cout << "Failed to load font \n";
+	}
+	titleText.setString("Whack-a-Mole (Again)");
+	titleText.setCharacterSize(48);
+	titleText.setFillColor(sf::Color::Red);
+	titleText.setPosition({300, 50});
+	
+	startOption.setString("Start");
+	startOption.setCharacterSize(30);
+	startOption.setFillColor(sf::Color::Black);
+	startOption.setPosition({200, 350});
+
+	quitOption.setString("Quit");
+	quitOption.setCharacterSize(30);
+	quitOption.setFillColor(sf::Color::Black);
+	quitOption.setPosition({800, 350});
+}
+
+void Game::inGame()
+{
+	if (!backgroundTexture.loadFromFile("../Data/Images/WhackaMole Worksheet/background.png"))
+	{
+		std::cout << "Failed to load background texture \n";
+	}
+
+	if (!birdTexture.loadFromFile("../Data/Images/WhackaMole Worksheet/bird.png"))
+	{
+		std::cout << "Failed to load bird texture \n";
+	}
+}

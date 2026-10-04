@@ -17,13 +17,27 @@ class Game
   void keyPressed(const sf::Event::KeyPressed* event);
   void keyReleased(const sf::Event::KeyReleased* event);
 
+  void mainMenu();
+  void inGame();
+
  private:
   sf::RenderWindow& window;
+
   sf::Texture backgroundTexture{"../Data/Images/WhackaMole Worksheet/background.png"};
   sf::Sprite background = sf::Sprite(backgroundTexture);
+
   sf::Texture birdTexture{ "../Data/Images/WhackaMole Worksheet/bird.png" };
   sf::Sprite bird = sf::Sprite(birdTexture);
 
+  sf::Texture menubackgroundTexture{ "../Data/Images/WhackaMole Worksheet/background.png"};
+  sf::Sprite menubackground = sf::Sprite(menubackgroundTexture);
+
+  sf::Font menuFont{"../Data/Fonts/OpenSans-Bold.ttf"};
+  sf::Text titleText = sf::Text(menuFont);
+  sf::Text startOption = sf::Text(menuFont);
+  sf::Text quitOption = sf::Text(menuFont);
+
+  bool inMenu;
 
 };
 
