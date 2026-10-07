@@ -19,6 +19,7 @@ class Game
 
   void mainMenu();
   void inGame();
+  void spawn();
 
  private:
   sf::RenderWindow& window;
@@ -32,12 +33,17 @@ class Game
   sf::Texture menubackgroundTexture{ "../Data/Images/WhackaMole Worksheet/background.png"};
   sf::Sprite menubackground = sf::Sprite(menubackgroundTexture);
 
-  sf::Font menuFont{"../Data/Fonts/OpenSans-Bold.ttf"};
-  sf::Text titleText = sf::Text(menuFont);
-  sf::Text startOption = sf::Text(menuFont);
-  sf::Text quitOption = sf::Text(menuFont);
+  sf::Font font{"../Data/Fonts/OpenSans-Bold.ttf"};
+  sf::Text titleText = sf::Text(font);
+  sf::Text startOption = sf::Text(font);
+  sf::Text quitOption = sf::Text(font);
+  sf::Text scoreText = sf::Text(font);
 
   bool inMenu;
+  bool reverse = false;
+  
+  int score = 0;
+  float speed;
 
 };
 

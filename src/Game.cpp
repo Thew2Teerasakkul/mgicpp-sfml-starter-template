@@ -27,8 +27,25 @@ bool Game::init()
 // Update runs after event polling and before rendering
 // use it for everything that needs to update between frames
 void Game::update(float dt)
-{
+{			
+    if (inMenu == false)
+	{
+		speed = 200;
+		if (bird.getPosition().x > (window.getSize().x - bird.getGlobalBounds().size.x) || bird.getPosition().x < 0)
+		{
+			reverse = !reverse;
+		}
 
+		if (reverse == false)
+		{
+			bird.move({ 1 * speed * dt, 0 });
+		}
+
+		if (reverse == true)
+		{
+			bird.move({ -1 * speed * dt, 0 });
+		}
+	}
 }
 
 // Runs after update, use it to tell the window what to draw this frame
@@ -45,6 +62,7 @@ void Game::render()
 	{
 		window.draw(background);
 		window.draw(bird);
+		window.draw(scoreText);
 	}
 }
 
@@ -59,7 +77,31 @@ void Game::mouseButtonPressed(const sf::Event::MouseButtonPressed* event)
 	// You can tell which button was pressed by comparing it to SFML's definitions of mouse buttons
 	if (event->button == sf::Mouse::Button::Left)
 	{
-		//Left mouse button was pressed
+		sf::Vector2f mousePos = window.mapPixelToCoords(position);
+
+		if (inMenu == true)
+		{
+			if (startOption.getGlobalBounds().contains(mousePos))
+			{
+				inMenu = false;
+			}
+			else if (quitOption.getGlobalBounds().contains(mousePos))
+			{
+				window.close();
+			}
+		}
+		
+		if (inMenu == false)
+		{
+			if (bird.getGlobalBounds().contains(mousePos))
+			{
+				std::cout << "Bird was clicked! \n";
+				score += 100;
+				std::cout << "Score: " << score << "\n";
+				scoreText.setString("Score: " + std::to_string(score));
+				spawn();
+			}
+		}
 	}
 }
 
@@ -103,7 +145,7 @@ void Game::mainMenu()
 	}
 	menubackground.setTexture(menubackgroundTexture);
 
-	if (!menuFont.openFromFile("../Data/Fonts/OpenSans-Bold.ttf"))
+	if (!font.openFromFile("../Data/Fonts/OpenSans-Bold.ttf"))
 	{
 		std::cout << "Failed to load font \n";
 	}
@@ -134,4 +176,19 @@ void Game::inGame()
 	{
 		std::cout << "Failed to load bird texture \n";
 	}
+	bird.setScale({ 0.5f, 0.5f });
+	bird.setPosition({ 400, 490 });
+
+	scoreText.setString("Score: " + std::to_string(score));
+	scoreText.setFillColor(sf::Color::Black);
+	scoreText.setCharacterSize(30);
+	scoreText.setPosition({10, 10});
+}
+
+void Game::spawn()
+{
+	float x = static_cast<float>(rand() % (window.getSize().x - static_cast<int>(bird.getGlobalBounds().size.x)));
+	float y = static_cast<float>(rand() % (window.getSize().y - static_cast<int>(bird.getGlobalBounds().size.y)));
+	bird.setPosition({ x, y });
+	reverse = rand() % 2 == 0; // Randomly set reverse to true or false
 }
